@@ -1,0 +1,434 @@
+/* ===================================================
+   1. BIẾN MÀU & THIẾT LẬP CHUNG
+   =================================================== */
+:root {
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.75);
+  --card-bg: rgba(255, 255, 255, 0.15);
+  --card-border: rgba(255, 255, 255, 0.25);
+  --primary: #ffffff;
+  --primary-text: #1e3a8a;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+  --radius: 18px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  background-attachment: fixed;
+  transition: background 0.8s ease;
+  line-height: 1.5;
+}
+
+/* ===================================================
+   2. NỀN THAY ĐỔI THEO THỜI TIẾT
+   =================================================== */
+.theme-default { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+.theme-clear   { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+.theme-cloudy  { background: linear-gradient(135deg, #64748b, #334155); }
+.theme-fog     { background: linear-gradient(135deg, #94a3b8, #475569); }
+.theme-rain    { background: linear-gradient(135deg, #475569, #1e293b); }
+.theme-snow    { background: linear-gradient(135deg, #a5b4fc, #6366f1); }
+.theme-storm   { background: linear-gradient(135deg, #312e81, #0f172a); }
+.theme-night   { background: linear-gradient(135deg, #1e1b4b, #020617); }
+
+/* ===================================================
+   3. BỐ CỤC KHUNG CHÍNH
+   =================================================== */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* Thẻ kính mờ (glassmorphism) dùng chung */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 24px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ===================================================
+   4. HEADER & NÚT CHUYỂN ĐỔI ĐƠN VỊ
+   =================================================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.unit-toggle {
+  display: flex;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.unit-btn {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.unit-btn.active {
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+/* ===================================================
+   5. THANH TÌM KIẾM & NÚT BẤM
+   =================================================== */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+  outline: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s, opacity 0.2s;
+}
+
+.btn:hover:not(:disabled) { transform: translateY(-2px); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+
+/* Viền nổi bật khi điều hướng bằng bàn phím */
+button:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 2px;
+}
+
+/* ===================================================
+   6. THÔNG BÁO LỖI, BANNER NGOẠI TUYẾN, LOADING
+   =================================================== */
+.error-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: var(--error-bg);
+  color: var(--error-text);
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-close {
+  border: none;
+  background: transparent;
+  color: var(--error-text);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.offline-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #f59e0b;
+  color: #1f2937;
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+/* Thuộc tính hidden luôn được ưu tiên ẩn phần tử */
+[hidden] { display: none !important; }
+
+/* ===================================================
+   7. THỜI TIẾT HIỆN TẠI
+   =================================================== */
+.current-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.city-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.local-time,
+.temp-range {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.weather-desc {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 4px 0;
+}
+
+.current-temp-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.weather-icon { font-size: 4.5rem; line-height: 1; }
+
+.current-temp {
+  font-size: 4.5rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* Lưới 4 chỉ số chi tiết */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.detail-icon { font-size: 1.6rem; }
+.detail-label { font-size: 0.8rem; color: var(--text-muted); }
+.detail-value { font-size: 1.05rem; font-weight: 600; }
+
+/* ===================================================
+   8. DỰ BÁO THEO GIỜ (cuộn ngang)
+   =================================================== */
+.hourly-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+}
+
+.hourly-list::-webkit-scrollbar { height: 6px; }
+.hourly-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+}
+
+.hour-item {
+  flex: 0 0 auto;
+  min-width: 74px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px 8px;
+  scroll-snap-align: start;
+}
+
+.hour-item.now {
+  background: rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+}
+
+.hour-time { font-size: 0.85rem; color: var(--text-muted); }
+.hour-icon { font-size: 1.8rem; margin: 6px 0; }
+.hour-temp { font-weight: 600; }
+.hour-rain { font-size: 0.75rem; color: #bae6fd; min-height: 1.1em; }
+
+/* ===================================================
+   9. DỰ BÁO 7 NGÀY
+   =================================================== */
+.daily-list { list-style: none; }
+
+.day-item {
+  display: grid;
+  grid-template-columns: 1.4fr 40px 1.6fr 60px 1.6fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.day-item:last-child { border-bottom: none; }
+
+.day-name { font-weight: 600; }
+.day-name small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.day-icon { font-size: 1.7rem; text-align: center; }
+.day-desc { font-size: 0.9rem; color: var(--text-muted); }
+.day-rain { font-size: 0.85rem; color: #bae6fd; text-align: center; }
+
+.day-temps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.day-temps .min { color: var(--text-muted); }
+
+/* Thanh biểu diễn khoảng nhiệt độ */
+.temp-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.temp-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #60a5fa, #facc15, #f97316);
+}
+
+/* ===================================================
+   10. FOOTER
+   =================================================== */
+.app-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+
+.app-footer a { color: var(--text); }
+
+/* ===================================================
+   11. HIỆU ỨNG CHUYỂN ĐỘNG
+   =================================================== */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Tôn trọng người dùng muốn giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ===================================================
+   12. RESPONSIVE (máy tính bảng & điện thoại)
+   =================================================== */
+@media (max-width: 768px) {
+  .details-grid { grid-template-columns: repeat(2, 1fr); }
+  .day-item { grid-template-columns: 1.2fr 36px 50px 2fr; }
+  .day-desc { display: none; }
+}
+
+@media (max-width: 520px) {
+  .logo { font-size: 1.3rem; }
+  .search-bar { flex-wrap: wrap; }
+  .search-input { flex-basis: 100%; }
+  .btn { flex: 1; justify-content: center; padding: 12px; }
+  .card { padding: 18px; }
+  .city-name { font-size: 1.5rem; }
+  .weather-icon, .current-temp { font-size: 3.5rem; }
+  .details-grid { gap: 8px; }
+  .day-item { grid-template-columns: 1fr 32px 1.8fr; }
+  .day-rain { display: none; }
+}

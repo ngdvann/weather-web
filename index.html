@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <!-- ===== Cấu hình cơ bản của trang ===== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ứng dụng xem thời tiết hiện tại, dự báo theo giờ và 7 ngày tới.">
+  <title>Thời Tiết</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-default">
+
+  <!-- ===== Banner cảnh báo mất kết nối mạng ===== -->
+  <div id="offlineBanner" class="offline-banner" role="status" hidden>
+    ⚠️ Bạn đang ngoại tuyến. Dữ liệu sẽ tự cập nhật khi có mạng trở lại.
+  </div>
+
+  <div class="container">
+
+    <!-- ===== Phần đầu trang: logo + nút chuyển đổi °C/°F ===== -->
+    <header class="app-header">
+      <h1 class="logo">🌤️ Thời Tiết</h1>
+      <div class="unit-toggle" role="group" aria-label="Chọn đơn vị nhiệt độ">
+        <button type="button" class="unit-btn active" data-unit="C" aria-pressed="true">°C</button>
+        <button type="button" class="unit-btn" data-unit="F" aria-pressed="false">°F</button>
+      </div>
+    </header>
+
+    <!-- ===== Thanh tìm kiếm (form để hỗ trợ nhấn Enter) ===== -->
+    <form id="searchForm" class="search-bar" role="search" autocomplete="off">
+      <input
+        id="cityInput"
+        class="search-input"
+        type="search"
+        placeholder="Nhập tên thành phố, ví dụ: Đà Nẵng"
+        aria-label="Tên thành phố"
+        maxlength="100"
+      >
+      <button type="submit" id="searchBtn" class="btn btn-primary">
+        🔍 <span class="btn-text">Tìm kiếm</span>
+      </button>
+      <button type="button" id="locationBtn" class="btn btn-secondary">
+        📍 <span class="btn-text">Vị trí của tôi</span>
+      </button>
+    </form>
+
+    <!-- ===== Hộp thông báo lỗi ===== -->
+    <div id="errorBox" class="error-box" role="alert" hidden>
+      <span id="errorMessage"></span>
+      <button type="button" id="errorClose" class="error-close" aria-label="Đóng thông báo">×</button>
+    </div>
+
+    <!-- ===== Trạng thái đang tải ===== -->
+    <div id="loading" class="loading" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Đang tải dữ liệu thời tiết...</p>
+    </div>
+
+    <!-- ===== Nội dung thời tiết chính ===== -->
+    <main id="weatherContent" hidden>
+
+      <!-- Thời tiết hiện tại -->
+      <section class="card current-weather" aria-labelledby="cityName">
+        <div class="current-main">
+          <div class="current-info">
+            <h2 id="cityName" class="city-name">--</h2>
+            <p id="localTime" class="local-time">--</p>
+            <p id="weatherDesc" class="weather-desc">--</p>
+            <p id="tempRange" class="temp-range">--</p>
+          </div>
+          <div class="current-temp-wrap">
+            <span id="weatherIcon" class="weather-icon" aria-hidden="true">--</span>
+            <span id="currentTemp" class="current-temp">--</span>
+          </div>
+        </div>
+
+        <!-- Các chỉ số chi tiết -->
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-icon" aria-hidden="true">🌡️</span>
+            <div>
+              <p class="detail-label">Cảm giác như</p>
+              <p id="feelsLike" class="detail-value">--</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon" aria-hidden="true">💧</span>
+            <div>
+              <p class="detail-label">Độ ẩm</p>
+              <p id="humidity" class="detail-value">--</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon" aria-hidden="true">💨</span>
+            <div>
+              <p class="detail-label">Tốc độ gió</p>
+              <p id="windSpeed" class="detail-value">--</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon" aria-hidden="true">⏲️</span>
+            <div>
+              <p class="detail-label">Áp suất</p>
+              <p id="pressure" class="detail-value">--</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dự báo theo giờ (24 giờ tới) -->
+      <section class="card">
+        <h3 class="section-title">🕒 Dự báo 24 giờ tới</h3>
+        <div id="hourlyList" class="hourly-list"></div>
+      </section>
+
+      <!-- Dự báo 7 ngày -->
+      <section class="card">
+        <h3 class="section-title">📅 Dự báo 7 ngày</h3>
+        <ul id="dailyList" class="daily-list"></ul>
+      </section>
+    </main>
+
+    <!-- ===== Chân trang ===== -->
+    <footer class="app-footer">
+      Dữ liệu thời tiết từ <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
